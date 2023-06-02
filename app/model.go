@@ -6,6 +6,7 @@ type SensorMetadata struct {
 	Name     string   `json:"name" validate:"required"`
 	Location Location `json:"location" validate:"required"`
 	Tags     []string `json:"tags"`
+	Distance float64  `json:"distance,omitempty"`
 }
 
 // Location represents the GPS position of a sensor.

@@ -129,7 +129,7 @@ func (r *PostgresRepository) GetNearestSensorMetadata(latitude, longitude string
 	var sensorMetadata SensorMetadata
 
 	// Scan the result into the SensorMetadata struct
-	err = row.Scan(&sensorMetadata.ID, &sensorMetadata.Name, &sensorMetadata.Location.Latitude, &sensorMetadata.Location.Longitude, pq.Array(&sensorMetadata.Tags))
+	err = row.Scan(&sensorMetadata.ID, &sensorMetadata.Name, &sensorMetadata.Location.Latitude, &sensorMetadata.Location.Longitude, pq.Array(&sensorMetadata.Tags), &sensorMetadata.Distance)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			// Return nil and a custom error if no rows are found

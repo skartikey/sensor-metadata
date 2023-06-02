@@ -31,7 +31,7 @@ func main() {
 
 	// Routes
 	router.HandleFunc("/sensors", handler.CreateSensorMetadata).Methods("POST")
-	router.HandleFunc("/sensors/{name}", handler.GetSensorMetadata).Methods("GET")
+	router.HandleFunc("/sensors", handler.GetSensorMetadata).Methods("GET")
 	router.HandleFunc("/sensors/{name}", handler.UpdateSensorMetadata).Methods("PUT")
 	router.HandleFunc("/sensors/nearest", handler.GetNearestSensorMetadata).Methods("GET")
 

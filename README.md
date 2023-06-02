@@ -74,7 +74,7 @@ go build
 
 ### Get Sensor Metadata
 
-**URL:** `/sensors/{name}`
+**URL:** `/sensors?name={name}`
 
 **Method:** `GET`
 
@@ -116,7 +116,7 @@ go build
 
 **Response:**
 
-- Status Code: `204 No Content`
+- Status Code: `200 OK`
 - Response Body: Empty
 
 ### Get Nearest Sensor Metadata
