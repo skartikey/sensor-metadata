@@ -14,3 +14,14 @@ type Location struct {
 	Latitude  float64 `json:"latitude" validate:"required"`
 	Longitude float64 `json:"longitude" validate:"required"`
 }
+
+type MapboxFeature struct {
+	Geometry struct {
+		Coordinates []float64 `json:"coordinates"`
+	} `json:"geometry"`
+	PlaceName string `json:"place_name"`
+}
+
+type MapboxResponse struct {
+	Features []MapboxFeature `json:"features"`
+}

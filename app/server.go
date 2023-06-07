@@ -36,6 +36,7 @@ func (s *Server) Start(port string) error {
 	router.HandleFunc("/sensors", s.handler.GetSensorMetadata).Methods(http.MethodGet)
 	router.HandleFunc("/sensors", s.handler.UpdateSensorMetadata).Methods(http.MethodPut)
 	router.HandleFunc("/sensors/nearest", s.handler.GetNearestSensorMetadata).Methods(http.MethodGet)
+	router.HandleFunc("/sensors", s.handler.GetNearestSensorByCityMetadata).Methods(http.MethodGet)
 
 	addr := fmt.Sprintf(":%s", port)
 	log.Printf("Server started. Listening on %s", addr)

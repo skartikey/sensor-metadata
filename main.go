@@ -34,6 +34,7 @@ func main() {
 	router.HandleFunc("/sensors", handler.GetSensorMetadata).Methods("GET")
 	router.HandleFunc("/sensors/{name}", handler.UpdateSensorMetadata).Methods("PUT")
 	router.HandleFunc("/sensors/nearest", handler.GetNearestSensorMetadata).Methods("GET")
+	router.HandleFunc("/sensors/{city}", handler.GetNearestSensorByCityMetadata).Methods("GET")
 
 	// Start the HTTP server
 	log.Println("Server started on port 8080")

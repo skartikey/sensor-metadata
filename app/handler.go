@@ -112,6 +112,23 @@ func (h *Handler) GetNearestSensorMetadata(w http.ResponseWriter, r *http.Reques
 	jsonResponse(w, http.StatusOK, sensorMetadata)
 }
 
+func (h *Handler) GetNearestSensorByCityMetadata(w http.ResponseWriter, r *http.Request) {
+	city := r.URL.Query().Get("city")
+	if city == "" {
+		sendErrorResponse(w, http.StatusBadRequest, "Missing 'city' parameter")
+		return
+	}
+
+	// Query the nearest sensor
+	sensorMetadata, err := h.repo.GetNearestSensorByCityMetadata(city)
+	if err != nil {
+		sendErrorResponse(w, http.StatusNotFound, "No nearest sensor found")
+		return
+	}
+
+	jsonResponse(w, http.StatusOK, sensorMetadata)
+}
+
 // Helper function to send JSON response with appropriate status code.
 func jsonResponse(w http.ResponseWriter, statusCode int, data interface{}) {
 	w.Header().Set("Content-Type", "application/json")

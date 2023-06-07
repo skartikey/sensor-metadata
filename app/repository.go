@@ -2,7 +2,11 @@ package app
 
 import (
 	"database/sql"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"net/url"
 	"os"
 
 	"github.com/lib/pq"
@@ -15,6 +19,7 @@ type Repository interface {
 	GetSensorMetadataByName(name string) (*SensorMetadata, error)
 	UpdateSensorMetadata(sensorMetadata *SensorMetadata) error
 	GetNearestSensorMetadata(latitude, longitude string) (*SensorMetadata, error)
+	GetNearestSensorByCityMetadata(city string) (string, error)
 }
 
 // PostgresRepository represents the PostgreSQL repository implementation.
@@ -139,4 +144,37 @@ func (r *PostgresRepository) GetNearestSensorMetadata(latitude, longitude string
 	}
 
 	return &sensorMetadata, nil
+}
+
+func (r *PostgresRepository) GetNearestSensorByCityMetadata(city string) (string, error) {
+	apiKey := os.Getenv("API_KEY")
+	encodedCity := url.QueryEscape(city)
+	url := fmt.Sprintf("https://api.mapbox.com/geocoding/v5/mapbox.places/%s.json?access_token=%s", encodedCity, apiKey)
+
+	resp, err := http.Get(url)
+	if err != nil {
+		return "", err
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", err
+	}
+
+	var response MapboxResponse
+	err = json.Unmarshal(body, &response)
+	if err != nil {
+		return "", err
+	}
+
+	if len(response.Features) > 0 {
+		coordinates := response.Features[0].Geometry.Coordinates
+		latitude := coordinates[1]
+		longitude := coordinates[0]
+		return fmt.Sprintf("%f,%f", latitude, longitude), nil
+	}
+
+	return "", fmt.Errorf("no sensor found for the city")
+
 }
